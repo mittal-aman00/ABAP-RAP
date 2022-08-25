@@ -1,0 +1,13 @@
+@EndUserText.label: 'Service def Travel BO projection view'
+define service ZUI966_RAP_TRAVEL_3 {
+  expose ZC966_RAP_Travel_1 as Travel;
+  expose ZC966_RAP_Booking_1 as Booking;
+  expose /DMO/I_Agency as Agency;
+  expose /DMO/I_Customer as Customer;
+  expose /DMO/I_Flight as Flight;
+  expose /DMO/I_Carrier as Carrier;
+  expose /DMO/I_Connection as Connection;
+  expose /DMO/I_Airport as Airport;
+  expose I_Country as Country;
+  expose I_Currency as Currency;
+}
