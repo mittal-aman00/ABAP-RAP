@@ -1,0 +1,4 @@
+@EndUserText.label: 'OData Web API Service Definition for SAC'
+define service ZAPI966_RAP_TRAVEL_1 {
+  expose ZC966_RAP_Travel_1 as Travel;
+}

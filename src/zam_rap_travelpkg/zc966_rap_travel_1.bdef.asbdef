@@ -1,0 +1,34 @@
+projection;
+use draft;
+//Uncomment this line in order to enable strict mode
+//2. The strict mode has two variants (strict(1), strict(2))
+//and is prerequisite to be future proof regarding syntax and
+//to be able to release your BO.
+//strict ( 2 );
+
+define behavior for ZC966_RAP_Travel_1 alias Travel
+
+//Because SAP Fiori elements-based UIs do not currently support the Etag handling
+//together with the draft handling for OData V2, you have to disable it in the projected
+//behavior definition.
+//use etag
+
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _Booking { create; with draft; }
+
+  use action acceptTravel;
+  use action rejectTravel;
+}
+
+define behavior for ZC966_RAP_Booking_1 alias Booking
+//use etag
+{
+  use update;
+  use delete;
+
+  use association _Travel { with draft; }
+}

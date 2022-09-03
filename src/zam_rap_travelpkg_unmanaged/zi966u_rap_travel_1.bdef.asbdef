@@ -1,0 +1,80 @@
+unmanaged;
+//strict ( 2 );
+
+define behavior for ZI966U_RAP_Travel_1 alias Travel
+implementation in class zbp_i966u_rap_travel_1 unique
+lock master
+authorization master ( instance )
+etag master Lastchangedat
+{
+  create;
+  update;
+  delete;
+  association _Booking { create; }
+
+  field ( read only ) TravelID;
+  field ( mandatory ) AgencyID, CustomerID, BeginDate, EndDate;
+
+//  When accessing the legacy code, the developer would normally have to use
+//  "move corresponding with mapping" in many places to map input derived types
+//  such as type table for create, type table for action import to legacy types
+//  and vice versa to map legacy results to output derived types such as type table
+//  for action result, type table for read result or failed. In legacy scenarios that
+//  are based on BAPIs so called control structures or “x-structures” are used. These
+//  structures have the same field name, but all beside the key fields have the same type
+//  char1 to tell the BAPI with the transferred value (TRUE or FALSE) whether data has been
+//  provided for the corresponding field. This type has the same function as the %CONTROL
+//  structure in input derived types, which indicates which of the fields in the main
+//  structure are accessed by an operation (update, read, and so on). But since the
+//  fieldnames in the %CONTROL structure differs from the one being used by BAPI’s
+//  we must perform a mapping here as well. The solution is now to introduce a central,
+//  declarative mapping within the behavior definition instead of many individual corresponding
+//   statements. This improves maintainability of the application's source code.
+    mapping for /DMO/TRAVEL control zs966_rap_travel_1
+  {
+    TravelID = travel_id;
+    AgencyID = AGENCY_ID;
+    CustomerID = CUSTOMER_ID;
+    BeginDate = BEGIN_DATE;
+    EndDate = END_DATE;
+    BookingFee = BOOKING_FEE;
+    TotalPrice = TOTAL_PRICE;
+    CurrencyCode = CURRENCY_CODE;
+    Description = DESCRIPTION;
+    Status = STATUS;
+    Createdby = CREATEDBY;
+    Createdat = CREATEDAT;
+    Lastchangedby = LASTCHANGEDBY;
+    Lastchangedat = LASTCHANGEDAT;
+  }
+}
+
+define behavior for ZI966U_RAP_BOOKING_2 alias Booking
+implementation in class zbp_i966u_rap_booking_2 unique
+lock dependent by _Travel
+//authorization dependent by _Travel
+etag dependent by _Travel
+{
+  update;
+  delete;
+  association _Travel;
+
+  field ( read only ) TravelID, BookingID;
+  field ( mandatory ) BookingDate, CustomerID, CarrierId, ConnectionID, FlightDate;
+
+ mapping for /DMO/BOOKING control zs966_rap_booking_2
+  {
+    TravelID = TRAVEL_ID;
+    BookingID = BOOKING_ID;
+    BookingDate = BOOKING_DATE;
+    CustomerID = CUSTOMER_ID;
+    CarrierID = CARRIER_ID;
+    ConnectionID = CONNECTION_ID;
+    FlightDate = FLIGHT_DATE;
+    FlightPrice = FLIGHT_PRICE;
+    CurrencyCode = CURRENCY_CODE;
+  }
+
+
+
+}
